@@ -11,9 +11,11 @@ const Screen: React.FC<Props> = ({ children, footer }) => (
     <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
     <SafeAreaView>
-      {children}
+      <View style={styles.content}>
+        {children}
 
-      {footer}
+        {footer}
+      </View>
     </SafeAreaView>
   </View>
 )
@@ -23,6 +25,9 @@ const styles = StyleSheet.create({
     ...Containers.fullHeight,
     backgroundColor: Colors.background,
     padding: Spacing.large,
+  },
+  content: {
+    height: '100%',
     justifyContent: 'space-between',
   }
 });

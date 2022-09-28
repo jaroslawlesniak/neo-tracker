@@ -5,10 +5,15 @@ const fullWidth: ViewStyle = {
 };
 
 const fullHeight: ViewStyle = {
-  flex: 1,
+  height: '100%',
+};
+
+const fullRadius: ViewStyle = {
+  borderRadius: 100,
 };
 
 export default {
   fullWidth,
   fullHeight,
+  fullRadius,
 };

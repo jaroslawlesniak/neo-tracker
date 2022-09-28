@@ -4,4 +4,5 @@ const white = '#ffffff';
 export default {
   background: white,
   primary: toreaBay,
+  onPrimary: white,
 };
