@@ -6,12 +6,10 @@ import { OnboardingScreenRouteProps } from '../d';
 
 type Props = OnboardingScreenRouteProps<'Home'>;
 
-const HomeScreen: React.FC<Props> = ({  }) => {
-  return (
-    <Screen footer={<Button title='Connect' onPress={() => {}} />}>
-      <Text>Home</Text>
-    </Screen>
-  );
-}
+const HomeScreen: React.FC<Props> = ({  }) => (
+  <Screen footer={<Button title='Connect' onPress={() => {}} />}>
+    <Text>Home</Text>
+  </Screen>
+);
 
 export default HomeScreen;
