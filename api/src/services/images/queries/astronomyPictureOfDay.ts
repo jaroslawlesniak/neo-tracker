@@ -3,11 +3,12 @@ import { getWithAuthHeaders } from "../../../lib/api";
 import type { AstronomyPictureOfDayResponse } from "../d";
 
 import { PrismaClient } from "@prisma/client";
+import { formatDate, now } from "../../../lib/date";
 
 const prisma = new PrismaClient();
 
 const astronomyPictureOfDay = async () => {
-  const start_date = "2022-09-29";
+  const start_date = formatDate(now());
 
   const picture = await prisma.astronomyPictureOfDay.findFirst({
     where: {
