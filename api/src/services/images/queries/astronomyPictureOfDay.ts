@@ -2,48 +2,48 @@ import { getWithAuthHeaders } from "../../../lib/api";
 
 import type { AstronomyPictureOfDayResponse } from "../d";
 
-import { PrismaClient } from "@prisma/client";
 import { formatDate, now } from "../../../lib/date";
+import { cacheableRequest } from "../../../lib/cache";
+import { AstronomyPictureOfDay } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const getImage = (start_date: string) =>
+  getWithAuthHeaders<AstronomyPictureOfDayResponse>(
+    "https://api.nasa.gov/planetary/apod",
+    { start_date }
+  );
+
+const toAstronomyPictureOfDay = ({
+  date,
+  explanation,
+  hdurl,
+  media_type,
+  title,
+  url,
+}: AstronomyPictureOfDayResponse): Partial<AstronomyPictureOfDay> => ({
+  date: date?.toString(),
+  explanation: explanation?.toString(),
+  hdurl: hdurl?.toString(),
+  media_type: media_type?.toString(),
+  title: title?.toString(),
+  url: url?.toString(),
+});
 
 const astronomyPictureOfDay = async () => {
-  const start_date = formatDate(now());
+  const date = formatDate(now());
 
-  const picture = await prisma.astronomyPictureOfDay.findFirst({
-    where: {
-      date: start_date,
-    },
-  });
-
-  if (picture) {
-    return picture;
-  } else {
-    const {
-      date,
-      explanation,
-      hdurl,
-      media_type,
-      title,
-      url,
-    } = await getWithAuthHeaders<AstronomyPictureOfDayResponse>(
-      "https://api.nasa.gov/planetary/apod",
-      { start_date }
-    );
-
-    const image = await prisma.astronomyPictureOfDay.create({
-      data: {
-        date: date?.toString(),
-        explanation: explanation?.toString(),
-        hdurl: hdurl?.toString(),
-        media_type: media_type?.toString(),
-        title: title?.toString(),
-        url: url?.toString(),
+  return await cacheableRequest<
+    AstronomyPictureOfDay,
+    AstronomyPictureOfDayResponse
+  >(
+    {
+      collection: "astronomyPictureOfDay",
+      predicate: {
+        date,
       },
-    });
-
-    return image;
-  }
+    },
+    () => getImage(date),
+    toAstronomyPictureOfDay
+  );
 };
 
 export default astronomyPictureOfDay;
