@@ -1,5 +1,3 @@
-import people from "./dataset";
-
 import objects from './services/objects';
 import images from './services/images';
 
@@ -9,7 +7,7 @@ const Resolvers = {
     ...images.queries,
   },
   Mutation: {
-    addPerson: (_: any, args: any) => null,
+    addPerson: (_: never, args: any) => null,
   }
 };
 

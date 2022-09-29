@@ -11,3 +11,14 @@ model objects {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
 }
+
+model AstronomyPictureOfDay {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  date String?
+  explanation String?
+  hdurl String?
+  media_type String?
+  service_version String?
+  title String?
+  url String?
+}
