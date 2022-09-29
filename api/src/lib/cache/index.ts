@@ -4,30 +4,33 @@ const prisma = new PrismaClient();
 
 type Collection = {
   astronomyPictureOfDay: AstronomyPictureOfDay;
-}
+};
 
-type Request<T> = {
+type Request = {
   collection: keyof Collection;
-  predicate: Partial<T>;
-}
+  predicate: Partial<Collection[keyof Collection]>;
+};
 
-export const cacheableRequest =
-  async <T, Q>(request: Request<T>, resolver: () => Promise<Q>, mapper: (data: Q) => Partial<T>) => {
-    const { collection, predicate } = request;
+export const cacheableRequest = async <T, Q>(
+  request: Request,
+  resolver: () => Promise<Q>,
+  mapper: (data: Q) => Partial<T>
+) => {
+  const { collection, predicate } = request;
 
-    const storage = await prisma[collection].findFirst({
-      where: predicate
-    });
+  const storaged = await prisma[collection].findFirst({
+    where: predicate,
+  });
 
-    if (storage) {
-      return storage;
-    } else {
-      const response = await resolver();
+  if (storaged) {
+    return storaged;
+  } 
 
-      const data = await prisma[collection].create({
-        data: mapper(response),
-      });
+  const response = await resolver();
 
-      return data;
-    }
-  };
+  const data = await prisma[collection].create({
+    data: mapper(response),
+  });
+
+  return data;
+};

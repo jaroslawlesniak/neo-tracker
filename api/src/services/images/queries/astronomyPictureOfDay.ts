@@ -31,15 +31,10 @@ const toAstronomyPictureOfDay = ({
 const astronomyPictureOfDay = async () => {
   const date = formatDate(now());
 
-  return await cacheableRequest<
-    AstronomyPictureOfDay,
-    AstronomyPictureOfDayResponse
-  >(
+  return await cacheableRequest(
     {
       collection: "astronomyPictureOfDay",
-      predicate: {
-        date,
-      },
+      predicate: { date },
     },
     () => getImage(date),
     toAstronomyPictureOfDay
