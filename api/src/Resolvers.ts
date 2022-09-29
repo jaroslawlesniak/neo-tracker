@@ -1,25 +1,16 @@
 import people from "./dataset";
 
+import objects from './services/objects';
+import images from './services/images';
+
 const Resolvers = {
   Query: {
-    getAllPeople: () => people,
-    getPerson: (_: any, args: any) => { 
-      console.log(args, _);
-      return people.find((person) => person.id === args.id);
-    },
+    ...objects.queries,
+    ...images.queries,
   },
   Mutation: {
-    addPerson: (_: any, args: any) => {
-      const newPerson = {
-        id: people.length + 1,
-        name: args.name,
-      };
-
-      people.push(newPerson);
-      
-      return newPerson;
-    },
-  },
+    addPerson: (_: any, args: any) => null,
+  }
 };
 
 export default Resolvers;
