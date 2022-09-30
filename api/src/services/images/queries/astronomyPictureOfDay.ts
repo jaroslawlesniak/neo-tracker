@@ -1,14 +1,16 @@
+import { AstronomyPictureOfDay, PrismaClient } from "@prisma/client";
+
 import { getWithAuthHeaders } from "../../../lib/api";
+import { formatDate, now } from "../../../lib/date";
+import { withCache } from "../../../lib/cache";
 
 import type { AstronomyPictureOfDayResponse } from "../d";
 
-import { formatDate, now } from "../../../lib/date";
-import { cacheableRequest } from "../../../lib/cache";
-import { AstronomyPictureOfDay } from "@prisma/client";
+const prisma = new PrismaClient();
 
 const getImage = (start_date: string) =>
   getWithAuthHeaders<AstronomyPictureOfDayResponse>(
-    "https://api.nasa.gov/planetary/apod",
+    `${process.env.NASA_API_URL}/planetary/apod`,
     { start_date }
   );
 
@@ -31,13 +33,16 @@ const toAstronomyPictureOfDay = ({
 const astronomyPictureOfDay = async () => {
   const date = formatDate(now());
 
-  return await cacheableRequest(
-    {
-      collection: "astronomyPictureOfDay",
-      predicate: { date },
-    },
+  return await withCache(
     () => getImage(date),
-    toAstronomyPictureOfDay
+    () =>
+      prisma.astronomyPictureOfDay.findFirst({
+        where: { date },
+      }),
+    (response) =>
+      prisma.astronomyPictureOfDay.create({
+        data: toAstronomyPictureOfDay(response),
+      })
   );
 };
 

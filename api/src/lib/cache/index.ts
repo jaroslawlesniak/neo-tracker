@@ -1,36 +1,32 @@
-import { AstronomyPictureOfDay, PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-type Collection = {
-  astronomyPictureOfDay: AstronomyPictureOfDay;
-};
-
-type Request = {
-  collection: keyof Collection;
-  predicate: Partial<Collection[keyof Collection]>;
-};
-
-export const cacheableRequest = async <T, Q>(
-  request: Request,
-  resolver: () => Promise<Q>,
-  mapper: (data: Q) => Partial<T>
+export const withCache = async <T, Q>(
+  fetcher: () => Promise<Q>,
+  predicate: () => Promise<T>,
+  parser: (data: Q) => Promise<T>
 ) => {
-  const { collection, predicate } = request;
+  const data = await predicate();
 
-  const storaged = await prisma[collection].findFirst({
-    where: predicate,
-  });
+  if (data) {
+    return data;
+  }
 
-  if (storaged) {
-    return storaged;
-  } 
+  const response = await fetcher();
 
-  const response = await resolver();
+  return parser(response);
+  // const { collection, predicate } = request;
 
-  const data = await prisma[collection].create({
-    data: mapper(response),
-  });
+  // const storaged = await prisma[collection].findFirst({
+  //   where: predicate,
+  // });
 
-  return data;
+  // if (storaged) {
+  //   return storaged;
+  // } 
+
+  // const response = await fetcher();
+
+  // const data = await prisma[collection].create({
+  //   data: parser(response),
+  // });
+
+  // return data;
 };

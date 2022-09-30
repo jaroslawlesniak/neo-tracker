@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model objects {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-}
-
 model AstronomyPictureOfDay {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   date String?
@@ -21,4 +16,12 @@ model AstronomyPictureOfDay {
   service_version String?
   title String?
   url String?
+}
+
+model Neo {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  mass String?
+  height String?
+  width String?
+  radius String?
 }
