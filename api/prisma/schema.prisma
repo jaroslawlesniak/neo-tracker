@@ -30,12 +30,6 @@ model Reaction {
   device_id String
   type ReactionType @default(heart)
   added_at String
-}
 
-model Neo {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  mass String?
-  height String?
-  width String?
-  radius String?
+  @@unique([device_id, astronomy_picture_of_day_id], name: "reaction_compound_id")
 }

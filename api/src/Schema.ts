@@ -41,7 +41,8 @@ const Schema = gql`
   }
 
   type Mutation {
-    addKudoToAstronomyPictureOfDay(id: String, device_id: String): Response
+    addReactionToAstronomyPictureOfDay(id: String, device_id: String): Response
+    removeReactionFromAstronomyPictureOfDay(id: String, device_id: String): Response
   }
 `;
 
