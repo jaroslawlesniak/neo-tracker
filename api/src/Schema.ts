@@ -36,7 +36,7 @@ const Schema = gql`
   }
 
   type Query {
-    astronomyPictureOfDay(date: String, device_id: String): AstronomyPictureOfDay
+    astronomyPictureOfDay(device_id: String): AstronomyPictureOfDay
     nearEarthObjects: [Neo]
   }
 
