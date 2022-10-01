@@ -13,7 +13,7 @@ type StatefulAstronomyPictureOfDay = AstronomyPictureOfDay & {
   reaction?: ReactionType;
 };
 
-type Te = AstronomyPictureOfDay & {
+type AstronomyPictureOfDayWithIncludes = AstronomyPictureOfDay & {
   reactions?: Reaction[];
 };
 
@@ -22,14 +22,17 @@ const aggregate = (reactions: Reaction[], type: ReactionType) =>
 
 const toStatefulAstronomyPicture =
   (deviceId: string) =>
-  (data: Te): StatefulAstronomyPictureOfDay => ({
-    ...data,
-    reactions: {
-      heart: aggregate(data.reactions || [], "heart"),
-    },
-    reaction: data.reactions?.find(({ device_id }) => device_id === deviceId)
-      ?.type,
-  });
+  (data: AstronomyPictureOfDayWithIncludes): StatefulAstronomyPictureOfDay => {
+    console.log(data)
+    return ({
+      ...data,
+      reactions: {
+        heart: aggregate(data.reactions || [], "heart"),
+      },
+      reaction: data.reactions?.find(({ device_id }) => device_id === deviceId)
+        ?.type,
+    });
+  }
 
 export const getStatefullAtronomyPictureOfDay = async (
   id: string,

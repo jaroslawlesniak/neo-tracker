@@ -1,7 +1,6 @@
 import { AstronomyPictureOfDay, PrismaClient } from "@prisma/client";
 
 import { getWithAuthHeaders } from "../../../lib/api";
-import { formatDate, now } from "../../../lib/date";
 import { withCache } from "../../../lib/cache";
 
 import { getStatefullAtronomyPictureOfDay } from "./services";
@@ -10,6 +9,7 @@ import type { AstronomyPictureOfDayResponse } from "../d";
 const prisma = new PrismaClient();
 
 type Request = {
+  date: string;
   device_id: string;
 }
 
@@ -46,9 +46,7 @@ const toAstronomyPictureOfDay = ({
   url: url?.toString(),
 });
 
-const astronomyPictureOfDay = async (_: never, { device_id }: Request) => {
-  const date = formatDate(now());
-
+const astronomyPictureOfDay = async (_: never, { date, device_id }: Request) => {
   const apod = await withCache(
     () => readFromCacheBy(date),
     () => fetchImage(date),

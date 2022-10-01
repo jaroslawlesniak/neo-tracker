@@ -15,11 +15,11 @@ const Schema = gql`
     video
   }
 
-  enum KudoType {
+  enum ReactionType {
     heart
   }
 
-  type Kudo {
+  type Reaction {
     heart: Int
   }
 
@@ -31,12 +31,12 @@ const Schema = gql`
     service_version: String
     title: String
     url: String
-    reaction: KudoType
-    kudos: [Kudo]
+    reaction: ReactionType
+    reactions: Reaction
   }
 
   type Query {
-    astronomyPictureOfDay: AstronomyPictureOfDay
+    astronomyPictureOfDay(date: String, device_id: String): AstronomyPictureOfDay
     nearEarthObjects: [Neo]
   }
 
