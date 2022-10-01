@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { formatDateTime, now } from '../../../lib/date';
+
+import { formatDateTime, now } from '@/lib/date';
 
 const prisma = new PrismaClient();
 

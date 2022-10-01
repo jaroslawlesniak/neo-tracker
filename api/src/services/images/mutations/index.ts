@@ -1,2 +1,2 @@
-export { default as addReactionToAstronomyPictureOfDay } from './addReactionToAstronomyPictureOfDay copy';
+export { default as addReactionToAstronomyPictureOfDay } from './addReactionToAstronomyPictureOfDay';
 export { default as removeReactionFromAstronomyPictureOfDay } from './removeReactionFromAstronomyPictureOfDay';

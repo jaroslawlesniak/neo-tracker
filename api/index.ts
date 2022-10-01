@@ -1,3 +1,5 @@
+import './aliases';
+
 import { ApolloServer } from "apollo-server-express";
 import Schema from "./src/Schema";
 import Resolvers from "./src/Resolvers";

@@ -4,7 +4,8 @@ import {
   PrismaClient,
   Reaction,
 } from "@prisma/client";
-import { withTruthy } from "../../../../lib/data";
+
+import { withTruthy } from "@/lib/data";
 
 const prisma = new PrismaClient();
 

@@ -1,7 +1,7 @@
 import { AstronomyPictureOfDay, PrismaClient } from "@prisma/client";
 
-import { getWithAuthHeaders } from "../../../lib/api";
-import { withCache } from "../../../lib/cache";
+import { getWithAuthHeaders } from "@/lib/api";
+import { withCache } from "@/lib/cache";
 
 import { getStatefullAtronomyPictureOfDay } from "./services";
 import type { AstronomyPictureOfDayResponse } from "../d";
