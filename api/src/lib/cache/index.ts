@@ -13,4 +13,4 @@ export const withCache = async <T, Q>(
   predicate: () => Promise<T>,
   fetcher: () => Promise<Q>,
   parser: (data: Q) => Promise<T>
-) => predicate().then((cached) => (cached ? cached : fetcher().then(parser)));
+) => predicate().then((cached) => cached ? cached : fetcher().then(parser));

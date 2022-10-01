@@ -2,10 +2,10 @@ import {
   AstronomyPictureOfDay,
   ReactionType,
   PrismaClient,
-  Reaction,
-} from "@prisma/client";
+  Reaction
+} from '@prisma/client';
 
-import { withTruthy } from "@/lib/data";
+import { withTruthy } from '@/lib/data';
 
 const prisma = new PrismaClient();
 
@@ -19,18 +19,18 @@ type AstronomyPictureOfDayWithIncludes = AstronomyPictureOfDay & {
 };
 
 const aggregate = (reactions: Reaction[], type: ReactionType) =>
-  reactions.reduce((acc, val) => (val.type === type ? acc + 1 : acc), 0);
+  reactions.reduce((acc, val) => val.type === type ? acc + 1 : acc, 0);
 
 const toStatefulAstronomyPicture =
   (deviceId: string) =>
-  (data: AstronomyPictureOfDayWithIncludes): StatefulAstronomyPictureOfDay => ({
-    ...data,
-    reactions: {
-      heart: aggregate(data.reactions || [], "heart"),
-    },
-    reaction: data.reactions?.find(({ device_id }) => device_id === deviceId)
-      ?.type,
-  });
+    (data: AstronomyPictureOfDayWithIncludes): StatefulAstronomyPictureOfDay => ({
+      ...data,
+      reactions: {
+        heart: aggregate(data.reactions || [], 'heart'),
+      },
+      reaction: data.reactions?.find(({ device_id, }) => device_id === deviceId)
+        ?.type,
+    });
 
 export const getStatefullAtronomyPictureOfDay = async (
   id: string,

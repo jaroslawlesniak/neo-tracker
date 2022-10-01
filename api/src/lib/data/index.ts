@@ -1,9 +1,9 @@
 export const withTruthy =
   <T, Q>(sideEffect: (data: T) => Q) =>
-  (data: T | null) => {
-    if (data) {
-      return sideEffect(data);
-    }
+    (data: T | null) => {
+      if (data) {
+        return sideEffect(data);
+      }
 
-    return null;
-  };
+      return null;
+    };

@@ -1,11 +1,11 @@
 type MediaType = 'image' | 'video';
 
 export type AstronomyPictureOfDayResponse = {
-  date?: String
-  explanation?: String
-  hdurl?: String
+  date?: string
+  explanation?: string
+  hdurl?: string
   media_type?: MediaType
-  service_version?: String
-  title?: String
-  url?: String
+  service_version?: string
+  title?: string
+  url?: string
 }

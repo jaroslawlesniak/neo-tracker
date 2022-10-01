@@ -13,7 +13,7 @@ type Response = {
   status: boolean;
 }
 
-const addReactionToAstronomyPictureOfDay = async (_: never, { id, device_id }: Request): Promise<Response> => {
+const addReactionToAstronomyPictureOfDay = async (_: never, { id, device_id, }: Request): Promise<Response> => {
   const eventTime = formatDateTime(now());
 
   await prisma.reaction.upsert({
@@ -23,22 +23,22 @@ const addReactionToAstronomyPictureOfDay = async (_: never, { id, device_id }: R
       type: 'heart',
       astronomy_picture_of_day: {
         connect: {
-          id
-        }
-      }
+          id,
+        },
+      },
     },
     update: {
-      added_at: eventTime
+      added_at: eventTime,
     },
     where: {
       reaction_compound_id: {
         astronomy_picture_of_day_id: id,
         device_id: device_id,
       },
-    }
+    },
   });
 
-  return { status: true };
-}
+  return { status: true, };
+};
 
 export default addReactionToAstronomyPictureOfDay;

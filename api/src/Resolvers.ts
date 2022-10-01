@@ -1,4 +1,4 @@
-import { images, objects } from "./services";
+import { images, objects } from './services';
 
 const Resolvers = {
   Query: {
