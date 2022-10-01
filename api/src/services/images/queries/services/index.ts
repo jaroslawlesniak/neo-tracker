@@ -1,36 +1,47 @@
-import { AstronomyPictureOfDay, KudoType, PrismaClient } from "@prisma/client";
+import {
+  AstronomyPictureOfDay,
+  ReactionType,
+  PrismaClient,
+  Reaction,
+} from "@prisma/client";
+import { withTruthy } from "../../../../lib/data";
 
 const prisma = new PrismaClient();
 
 type StatefulAstronomyPictureOfDay = AstronomyPictureOfDay & {
-  kudos: Record<KudoType, number>;
-  reaction?: KudoType;
-}
+  reactions: Record<ReactionType, number>;
+  reaction?: ReactionType;
+};
 
-export const getStatefullAtronomyPictureOfDay = async (id: string, deviceId: string): Promise<StatefulAstronomyPictureOfDay | null> => {
-  const data = await prisma.astronomyPictureOfDay.findFirst({
-    where: {
-      id,
+type Te = AstronomyPictureOfDay & {
+  reactions?: Reaction[];
+};
+
+const aggregate = (reactions: Reaction[], type: ReactionType) =>
+  reactions.reduce((acc, val) => (val.type === type ? acc + 1 : acc), 0);
+
+const toStatefulAstronomyPicture =
+  (deviceId: string) =>
+  (data: Te): StatefulAstronomyPictureOfDay => ({
+    ...data,
+    reactions: {
+      heart: aggregate(data.reactions || [], "heart"),
     },
-    include: {
-      kudos: {
-        select: {
-          device_id: true,
-          type: true,
-        }
-      },
-    },
+    reaction: data.reactions?.find(({ device_id }) => device_id === deviceId)
+      ?.type,
   });
 
-  if (data) {
-    return {
-      ...data,
-      kudos: {
-        heart: data.kudos.reduce((acc, val) => val.type === 'heart' ? acc + 1 : acc, 0),
+export const getStatefullAtronomyPictureOfDay = async (
+  id: string,
+  deviceId: string
+): Promise<StatefulAstronomyPictureOfDay | null> =>
+  prisma.astronomyPictureOfDay
+    .findFirst({
+      where: {
+        id,
       },
-      reaction: data.kudos.find(({ device_id }) => device_id === deviceId)?.type,
-    }
-  }
-
-  return null;
-}
+      include: {
+        reactions: true,
+      },
+    })
+    .then(withTruthy(toStatefulAstronomyPicture(deviceId)));
