@@ -1,14 +1,13 @@
-import objects from './services/objects';
-import images from './services/images';
+import { images, objects } from "./services";
 
 const Resolvers = {
   Query: {
-    ...objects.queries,
     ...images.queries,
+    ...objects.queries,
   },
   Mutation: {
-    addPerson: (_: never, args: any) => null,
-  }
+    ...images.mutations,
+  },
 };
 
 export default Resolvers;

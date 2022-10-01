@@ -4,15 +4,31 @@ import { getWithAuthHeaders } from "../../../lib/api";
 import { formatDate, now } from "../../../lib/date";
 import { withCache } from "../../../lib/cache";
 
+import { getStatefullAtronomyPictureOfDay } from "./services";
 import type { AstronomyPictureOfDayResponse } from "../d";
 
 const prisma = new PrismaClient();
 
-const getImage = (start_date: string) =>
+type Request = {
+  device_id: string;
+}
+
+const fetchImage = (date: string) =>
   getWithAuthHeaders<AstronomyPictureOfDayResponse>(
     `${process.env.NASA_API_URL}/planetary/apod`,
-    { start_date }
+    { start_date: date, end_date: date }
   );
+
+const readFromCacheBy = (date: string) =>
+  prisma.astronomyPictureOfDay.findFirst({
+    where: { date },
+    select: { id: true },
+  });
+
+const persistImage = (data: AstronomyPictureOfDayResponse) =>
+  prisma.astronomyPictureOfDay.create({
+    data: toAstronomyPictureOfDay(data),
+  });
 
 const toAstronomyPictureOfDay = ({
   date,
@@ -30,20 +46,20 @@ const toAstronomyPictureOfDay = ({
   url: url?.toString(),
 });
 
-const astronomyPictureOfDay = async () => {
+const astronomyPictureOfDay = async (_: never, { device_id }: Request) => {
   const date = formatDate(now());
 
-  return await withCache(
-    () => getImage(date),
-    () =>
-      prisma.astronomyPictureOfDay.findFirst({
-        where: { date },
-      }),
-    (response) =>
-      prisma.astronomyPictureOfDay.create({
-        data: toAstronomyPictureOfDay(response),
-      })
+  const apod = await withCache(
+    () => readFromCacheBy(date),
+    () => fetchImage(date),
+    persistImage
   );
+
+  if (apod) {
+    return await getStatefullAtronomyPictureOfDay(apod.id, device_id);
+  }
+
+  return null;
 };
 
 export default astronomyPictureOfDay;

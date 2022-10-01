@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum KudoType {
+  heart
+}
+
 model AstronomyPictureOfDay {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   date String?
@@ -16,6 +20,16 @@ model AstronomyPictureOfDay {
   service_version String?
   title String?
   url String?
+  kudos Kudo[]
+}
+
+model Kudo {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  astronomy_picture_of_day AstronomyPictureOfDay? @relation(fields: [astronomy_picture_of_day_id], references: [id])
+  astronomy_picture_of_day_id String? @db.ObjectId
+  device_id String
+  type KudoType @default(heart)
+  added_at String
 }
 
 model Neo {
