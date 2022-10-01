@@ -4,6 +4,7 @@ import { getWithAuthHeaders } from '@/lib/api';
 import { withCache } from '@/lib/cache';
 
 import { getStatefullAtronomyPictureOfDay } from './services';
+
 import type { AstronomyPictureOfDayResponse } from '../d';
 
 const prisma = new PrismaClient();
