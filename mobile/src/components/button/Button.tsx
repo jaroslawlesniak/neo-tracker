@@ -1,5 +1,7 @@
-import { Pressable, Text, StyleSheet, View } from 'react-native';
-import { Colors, Containers, Spacing } from '../../styles';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { Colors, Containers, Spacing } from '@/styles';
 
 type Props = {
   title: string;
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.onPrimary,
     textAlign: 'center',
-  }
+  },
 });
 
 export default Button;

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
-import { Colors, Spacing, Containers } from '../../styles';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+
+import { Colors, Containers, Spacing } from '@/styles';
 
 type Props = PropsWithChildren & {
   footer?: React.ReactElement;
@@ -18,7 +19,7 @@ const Screen: React.FC<Props> = ({ children, footer }) => (
       </View>
     </SafeAreaView>
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   content: {
     height: '100%',
     justifyContent: 'space-between',
-  }
+  },
 });
 
 export default Screen;

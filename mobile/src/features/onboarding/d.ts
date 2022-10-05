@@ -4,4 +4,5 @@ export type Stack = {
   Home: undefined;
 };
 
-export type OnboardingScreenRouteProps<T extends keyof Stack> = NativeStackScreenProps<Stack, T>;
+export type OnboardingScreenRouteProps<T extends keyof Stack> =
+  NativeStackScreenProps<Stack, T>;
