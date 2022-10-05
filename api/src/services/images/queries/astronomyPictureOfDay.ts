@@ -38,6 +38,7 @@ const toAstronomyPictureOfDay = ({
   media_type,
   title,
   url,
+  copyright,
 }: AstronomyPictureOfDayResponse): Partial<AstronomyPictureOfDay> => ({
   date: date?.toString(),
   explanation: explanation?.toString(),
@@ -45,6 +46,7 @@ const toAstronomyPictureOfDay = ({
   media_type: media_type?.toString(),
   title: title?.toString(),
   url: url?.toString(),
+  copyright: copyright?.toString(),
 });
 
 const astronomyPictureOfDay = async (_: never, { device_id, }: Request) => {

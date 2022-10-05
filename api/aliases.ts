@@ -1,5 +1,4 @@
 import moduleAlias from 'module-alias';
-import path from 'path';
 
 // const IS_DEV = process.env.NODE_ENV === 'development';
 // const rootPath = path.resolve(__dirname);

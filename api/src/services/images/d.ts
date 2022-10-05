@@ -8,4 +8,5 @@ export type AstronomyPictureOfDayResponse = {
   service_version?: string
   title?: string
   url?: string
+  copyright?: string;
 }

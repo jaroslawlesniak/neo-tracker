@@ -32,6 +32,7 @@ const Schema = gql`
     title: String
     url: String
     reaction: ReactionType
+    copyright: String
     reactions: Reaction
   }
 

@@ -20,6 +20,7 @@ model AstronomyPictureOfDay {
   service_version String?
   title String?
   url String?
+  copyright String?
   reactions Reaction[]
 }
 
